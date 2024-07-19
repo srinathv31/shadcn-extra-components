@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { ModeToggle } from "@/components/ui/dark-mode-toggle";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +18,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <header className="h-[10vh] shadow-md flex justify-between items-center p-10">
+            <p className="text-2xl">TABLE</p>
+            <ModeToggle />
+          </header>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
