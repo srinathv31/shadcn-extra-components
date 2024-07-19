@@ -62,7 +62,7 @@ export const columns: ColumnDef<Dog>[] = [
     header: "Breed",
     cell: ({ row }) => {
       const val = "" + row.getValue("breed");
-      return <p className="w-48">{val}</p>;
+      return <p className="w-36">{val}</p>;
     },
   },
   {
@@ -85,7 +85,7 @@ export const columns: ColumnDef<Dog>[] = [
     header: "Owner",
     cell: ({ row }) => {
       const val = "" + row.getValue("owner_name");
-      return <p className="w-48">{val}</p>;
+      return <p className="w-24">{val}</p>;
     },
   },
   {
