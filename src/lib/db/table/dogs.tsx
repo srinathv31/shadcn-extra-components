@@ -85,6 +85,10 @@ export const columns: ColumnDef<Dog>[] = [
   {
     accessorKey: "owner_name",
     header: "Owner",
+    cell: ({ row }) => {
+      const val = "" + row.getValue("owner_name");
+      return <p className="w-48">{val}</p>;
+    },
   },
   {
     accessorKey: "owner_contact",
