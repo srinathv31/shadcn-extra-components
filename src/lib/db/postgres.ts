@@ -11,7 +11,7 @@ const pool = new Pool({
 
 export async function query<T extends pg.QueryResultRow>(
   query: string,
-  params?: any[]
+  params?: any[],
 ) {
   const start = Date.now();
   const res = await pool.query<T>(query, params);
