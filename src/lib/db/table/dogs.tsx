@@ -53,11 +53,9 @@ export const columns: ColumnDef<Dog>[] = [
   },
   {
     accessorKey: "weight",
-    header: () => <div className="text-right">Weight</div>,
-    cell: ({ row }) => {
-      const weight = row.getValue("weight");
-      return <div className="text-right font-medium">{"" + weight}</div>;
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Weight" />
+    ),
   },
   {
     accessorKey: "breed",
@@ -108,7 +106,9 @@ export const columns: ColumnDef<Dog>[] = [
   },
   {
     accessorKey: "last_checkup_date",
-    header: () => <DataTableWideColumnHeader title="Last Checkup" />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Last Checkup" />
+    ),
     cell: ({ row }) => {
       const val = "" + row.getValue("last_checkup_date");
       return <p>{new Date(val).toLocaleDateString()}</p>;
