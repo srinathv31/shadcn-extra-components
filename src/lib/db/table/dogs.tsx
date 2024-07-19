@@ -1,4 +1,5 @@
 import { DataTableColumnHeader } from "@/components/table/data-table-column-header";
+import { DataTableWideColumnHeader } from "@/components/table/data-table-wide-column-header";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -61,6 +62,10 @@ export const columns: ColumnDef<Dog>[] = [
   {
     accessorKey: "breed",
     header: "Breed",
+    cell: ({ row }) => {
+      const val = "" + row.getValue("breed");
+      return <p className="w-48">{val}</p>;
+    },
   },
   {
     accessorKey: "profile_picture",
@@ -72,14 +77,14 @@ export const columns: ColumnDef<Dog>[] = [
   },
   {
     accessorKey: "energy_level",
-    header: "Energy Level",
+    header: "Energy",
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
   },
   {
     accessorKey: "owner_name",
-    header: "Owner Name",
+    header: "Owner",
   },
   {
     accessorKey: "owner_contact",
@@ -87,7 +92,7 @@ export const columns: ColumnDef<Dog>[] = [
   },
   {
     accessorKey: "vaccination_status",
-    header: "Vaccination Status",
+    header: () => <DataTableWideColumnHeader title="Vaccination Status" />,
     cell: (info) => (info.getValue() ? "Yes" : "No"),
   },
   {
@@ -96,7 +101,7 @@ export const columns: ColumnDef<Dog>[] = [
   },
   {
     accessorKey: "last_checkup_date",
-    header: "Last Checkup Date",
+    header: () => <DataTableWideColumnHeader title="Last Checkup" />,
     cell: ({ row }) => {
       const val = "" + row.getValue("last_checkup_date");
       return <p>{new Date(val).toLocaleDateString()}</p>;
