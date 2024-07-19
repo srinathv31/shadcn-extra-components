@@ -2,8 +2,9 @@
 
 import { getDogs } from "@/lib/dogs";
 import { use } from "react";
-import { DataTable } from "./ui/data-table";
-import { columns } from "@/lib/db/table/dogs";
+import { DataTable } from "./client-table/data-table";
+import { columns } from "@/lib/table/dogs";
+import { TasksTableToolbarActions } from "./dog-table/tasks-table-toolbar-actions";
 
 export default function DogTableClient({
   dogsPromise,
@@ -14,7 +15,7 @@ export default function DogTableClient({
 
   return (
     <div className="container mx-auto">
-      <DataTable columns={columns} data={dogs} />
+      <DataTable columns={columns} data={dogs}></DataTable>
     </div>
   );
 }

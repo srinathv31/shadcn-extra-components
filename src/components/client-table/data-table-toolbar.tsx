@@ -6,17 +6,18 @@ import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-// import { priorities, statuses } from "../data/data"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import { energies, statuses } from "@/lib/db/table/options";
 import { DataTableViewOptions } from "./data-table-view-options";
+import { energies, statuses } from "@/lib/table/options";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
+  children?: React.ReactNode;
 }
 
 export function DataTableToolbar<TData>({
   table,
+  children,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
@@ -56,7 +57,10 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <DataTableViewOptions table={table} />
+      <div className="flex items-center gap-2">
+        {children}
+        <DataTableViewOptions table={table} />
+      </div>
     </div>
   );
 }

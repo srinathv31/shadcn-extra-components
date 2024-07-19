@@ -25,17 +25,20 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { DataTablePagination } from "@/components/table/data-table-pagination";
-import { DataTableToolbar } from "@/components/table/data-table-toolbar";
+import { DataTableToolbar } from "./data-table-toolbar";
+import { DataTablePagination } from "./data-table-pagination";
+import { TasksTableToolbarActions } from "../dog-table/tasks-table-toolbar-actions";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  children?: React.ReactNode;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  children,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -69,7 +72,10 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} />
+      <DataTableToolbar table={table}>
+        <TasksTableToolbarActions table={table} />
+        {children}
+      </DataTableToolbar>
       <div className="rounded-md border">
         <Table>
           <TableHeader>

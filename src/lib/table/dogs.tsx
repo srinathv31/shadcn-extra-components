@@ -1,5 +1,5 @@
-import { DataTableColumnHeader } from "@/components/table/data-table-column-header";
-import { DataTableWideColumnHeader } from "@/components/table/data-table-wide-column-header";
+import { DataTableColumnHeader } from "@/components/client-table/data-table-column-header";
+import { DataTableWideColumnHeader } from "@/components/client-table/data-table-wide-column-header";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
