@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { DataTableViewOptions } from "./data-table-view-options";
 import { energies, statuses } from "@/lib/table/options";
+import { dogTableColumnMap } from "@/lib/table/mapper";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -59,7 +60,7 @@ export function DataTableToolbar<TData>({
       </div>
       <div className="flex items-center gap-2">
         {children}
-        <DataTableViewOptions table={table} />
+        <DataTableViewOptions table={table} columnMapper={dogTableColumnMap} />
       </div>
     </div>
   );

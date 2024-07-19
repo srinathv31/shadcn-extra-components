@@ -15,10 +15,12 @@ import {
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;
+  columnMapper?: Record<string, string>;
 }
 
 export function DataTableViewOptions<TData>({
   table,
+  columnMapper,
 }: DataTableViewOptionsProps<TData>) {
   return (
     <DropdownMenu>
@@ -49,7 +51,9 @@ export function DataTableViewOptions<TData>({
                 checked={column.getIsVisible()}
                 onCheckedChange={(value) => column.toggleVisibility(!!value)}
               >
-                {column.id}
+                {columnMapper
+                  ? (columnMapper[column.id] ?? column.id)
+                  : column.id}
               </DropdownMenuCheckboxItem>
             );
           })}
