@@ -25,8 +25,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <header className="h-[10vh] shadow-md flex justify-between items-center p-10">
-            <p className="text-2xl">TABLE</p>
+          <header className="h-20 border-b border-gray-200 flex justify-between items-center px-10">
+            <p className="text-lg">TABLE</p>
             <ModeToggle />
           </header>
           {children}
