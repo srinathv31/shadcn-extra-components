@@ -4,6 +4,8 @@ import { getDogs } from "@/lib/dogs";
 import { use } from "react";
 import { DataTable } from "./client-table/data-table";
 import { columns } from "@/lib/table/dogs";
+import useClientTable from "@/hooks/use-client-table";
+import { DataTableToolbar } from "./client-table/data-table-toolbar";
 import { TasksTableToolbarActions } from "./dog-table/tasks-table-toolbar-actions";
 
 export default function DogTableClient({
@@ -13,9 +15,15 @@ export default function DogTableClient({
 }) {
   const dogs = use(dogsPromise);
 
+  const { table } = useClientTable({ data: dogs, columns });
+
   return (
     <div className="container mx-auto">
-      <DataTable columns={columns} data={dogs}></DataTable>
+      <DataTable table={table}>
+        <DataTableToolbar table={table}>
+          <TasksTableToolbarActions table={table} />
+        </DataTableToolbar>
+      </DataTable>
     </div>
   );
 }
