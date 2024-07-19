@@ -26,17 +26,17 @@ export const labels = [
 
 export const energies = [
   {
-    value: "low",
+    value: "Low",
     label: "Low",
     icon: QuestionMarkCircledIcon,
   },
   {
-    value: "medium",
+    value: "Medium",
     label: "Medium",
     icon: CircleIcon,
   },
   {
-    value: "high",
+    value: "High",
     label: "High",
     icon: StopwatchIcon,
   },
