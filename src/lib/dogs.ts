@@ -4,7 +4,7 @@ import { query } from "./db/postgres";
 export async function getDogs() {
   const dogs = await query<Dog>(
     `
-    SELEcT * FROM dogs 
+    SELECT * FROM dogs 
     ORDER BY last_checkup_date DESC
     `,
   );
