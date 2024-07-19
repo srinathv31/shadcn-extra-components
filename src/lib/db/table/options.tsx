@@ -42,20 +42,15 @@ export const energies = [
   },
 ];
 
-export const priorities = [
+export const statuses = [
   {
-    label: "Low",
-    value: "low",
+    label: "No",
+    value: false,
     icon: ArrowDownIcon,
   },
   {
-    label: "Medium",
-    value: "medium",
+    label: "Yes",
+    value: true,
     icon: ArrowRightIcon,
-  },
-  {
-    label: "High",
-    value: "high",
-    icon: ArrowUpIcon,
   },
 ];

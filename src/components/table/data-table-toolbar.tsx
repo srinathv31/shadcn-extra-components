@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 
 // import { priorities, statuses } from "../data/data"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import { energies } from "@/lib/db/table/options";
+import { energies, statuses } from "@/lib/db/table/options";
 import { DataTableViewOptions } from "./data-table-view-options";
 
 interface DataTableToolbarProps<TData> {
@@ -38,13 +38,13 @@ export function DataTableToolbar<TData>({
             options={energies}
           />
         )}
-        {/* {table.getColumn("priority") && (
+        {table.getColumn("vaccination_status") && (
           <DataTableFacetedFilter
-            column={table.getColumn("priority")}
-            title="Priority"
-            options={priorities}
+            column={table.getColumn("vaccination_status")}
+            title="Vaccination"
+            options={statuses}
           />
-        )} */}
+        )}
         {isFiltered && (
           <Button
             variant="ghost"

@@ -94,6 +94,9 @@ export const columns: ColumnDef<Dog>[] = [
     accessorKey: "vaccination_status",
     header: () => <DataTableWideColumnHeader title="Vaccination Status" />,
     cell: (info) => (info.getValue() ? "Yes" : "No"),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
   },
   {
     accessorKey: "microchip_id",
