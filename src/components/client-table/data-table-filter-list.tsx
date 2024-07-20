@@ -5,6 +5,7 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -98,6 +99,17 @@ export default function DataTableFilterList<TData>({
               </DropdownMenuCheckboxItem>
             );
           })}
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            className="flex items-center"
+            onClick={() => {
+              table.resetColumnFilters();
+              setFilteredColumns([]);
+            }}
+          >
+            {/* <LogOut className="mr-2 h-4 w-4" /> */}
+            <p>Clear Filters</p>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
