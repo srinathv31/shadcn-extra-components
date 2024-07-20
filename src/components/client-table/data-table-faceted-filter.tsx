@@ -4,6 +4,7 @@ import FacetedFilterInput from "./faceted-filter-input";
 import FacetedFilterSelect from "./faceted-filter-select";
 
 interface DataTableFacetedFilterProps<TData, TValue> {
+  setFilteredColumns: React.Dispatch<React.SetStateAction<string[]>>;
   column?: Column<TData, TValue>;
   title?: string;
   options?: {
@@ -21,6 +22,7 @@ export function DataTableFacetedFilter<TData, TValue>({
   options,
   deriveOptions,
   placeholder,
+  setFilteredColumns,
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues();
 
@@ -52,6 +54,7 @@ export function DataTableFacetedFilter<TData, TValue>({
           title={title}
           searchInput={searchInput}
           placeholder={placeholder}
+          setFilteredColumns={setFilteredColumns}
         />
       ) : (
         <FacetedFilterSelect
@@ -60,6 +63,7 @@ export function DataTableFacetedFilter<TData, TValue>({
           options={filterOptions}
           selectedValues={selectedValues}
           facets={facets}
+          setFilteredColumns={setFilteredColumns}
         />
       )}
     </>

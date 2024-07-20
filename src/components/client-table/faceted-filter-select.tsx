@@ -19,6 +19,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
+import { Trash } from "lucide-react";
 
 interface FacetedFilterSelectProps<TData, TValue> {
   selectedValues: Set<string | boolean>;
@@ -27,6 +28,7 @@ interface FacetedFilterSelectProps<TData, TValue> {
     value: string | boolean;
     icon?: React.ComponentType<{ className?: string }>;
   }[];
+  setFilteredColumns: React.Dispatch<React.SetStateAction<string[]>>;
   column?: Column<TData, TValue>;
   title?: string;
   facets?: Map<string | boolean, number>;
@@ -38,6 +40,7 @@ export default function FacetedFilterSelect<TData, TValue>({
   options,
   selectedValues,
   facets,
+  setFilteredColumns,
 }: FacetedFilterSelectProps<TData, TValue>) {
   return (
     <Popover>
@@ -80,7 +83,19 @@ export default function FacetedFilterSelect<TData, TValue>({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0" align="start">
+      <PopoverContent
+        className="relative w-[200px] pt-4 px-0 pb-0"
+        align="start"
+      >
+        <Trash
+          onClick={() => {
+            column?.setFilterValue(undefined);
+            setFilteredColumns((curr) =>
+              curr.filter((col) => col !== column?.id),
+            );
+          }}
+          className="absolute top-2 right-2 h-4 w-4 text-muted-foreground hover:text-red-500 cursor-pointer"
+        />
         <Command>
           <CommandInput placeholder={title} />
           <CommandList>

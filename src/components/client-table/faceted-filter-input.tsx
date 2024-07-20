@@ -1,4 +1,4 @@
-import { SearchCheck } from "lucide-react";
+import { SearchCheck, Trash } from "lucide-react";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Separator } from "../ui/separator";
@@ -7,6 +7,8 @@ import { Input } from "../ui/input";
 import { Column } from "@tanstack/react-table";
 
 interface FacetedFilterInputProps<TData, TValue> {
+  setFilteredColumns: React.Dispatch<React.SetStateAction<string[]>>;
+
   column?: Column<TData, TValue>;
   title?: string;
   searchInput?: string | string[];
@@ -18,6 +20,7 @@ export default function FacetedFilterInput<TData, TValue>({
   title,
   searchInput,
   placeholder,
+  setFilteredColumns,
 }: FacetedFilterInputProps<TData, TValue>) {
   return (
     <Popover>
@@ -47,6 +50,15 @@ export default function FacetedFilterInput<TData, TValue>({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[150px] lg:w-[250px] p-0" align="start">
+        <Trash
+          onClick={() => {
+            column?.setFilterValue(undefined);
+            setFilteredColumns((curr) =>
+              curr.filter((col) => col !== column?.id),
+            );
+          }}
+          className="absolute top-2 right-2 h-4 w-4 text-muted-foreground hover:text-red-500 cursor-pointer"
+        />
         <Input
           placeholder={placeholder ?? `Search by ${title}...`}
           value={(column?.getFilterValue() as string) ?? ""}

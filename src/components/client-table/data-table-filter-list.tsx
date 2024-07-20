@@ -11,20 +11,19 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { Filter } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import { DataTableFilterField } from "@/interfaces/table";
+import { ToolbarContext } from "./context/ToolbarContext";
 
 export default function DataTableFilterList<TData>({
   table,
-  columnMapper,
-  filterOptions,
 }: {
   table: Table<TData>;
-  columnMapper?: Record<string, string>;
-  filterOptions?: DataTableFilterField<TData>[];
 }) {
-  const [filteredColumns, setfilteredColumns] = useState<string[]>([]);
+  const toolbarProps = useContext(ToolbarContext);
+  const { columnMapper, filterOptions } = toolbarProps ?? {};
+
+  const [filteredColumns, setFilteredColumns] = useState<string[]>([]);
 
   const columns = table
     .getAllColumns()
@@ -61,6 +60,7 @@ export default function DataTableFilterList<TData>({
                 options={options}
                 deriveOptions={deriveOptions}
                 placeholder={placeholder}
+                setFilteredColumns={setFilteredColumns}
               />
             ) : null}
           </>
@@ -84,11 +84,11 @@ export default function DataTableFilterList<TData>({
                 checked={filteredColumns.includes(column.id)}
                 onClick={() => {
                   if (filteredColumns.includes(column.id)) {
-                    setfilteredColumns((prev) =>
+                    setFilteredColumns((prev) =>
                       prev.filter((col) => col !== column.id),
                     );
                   } else {
-                    setfilteredColumns((prev) => [...prev, column.id]);
+                    setFilteredColumns((prev) => [...prev, column.id]);
                   }
                 }}
               >

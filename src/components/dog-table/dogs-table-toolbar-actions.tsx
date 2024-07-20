@@ -36,6 +36,7 @@ export function DogsTableToolbarActions<TData>({
             excludeColumns: ["select", "actions"],
           })
         }
+        className="ml-auto flex h-8"
       >
         <DownloadIcon className="mr-2 size-4" aria-hidden="true" />
         Export
