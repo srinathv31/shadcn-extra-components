@@ -7,6 +7,7 @@ import { columns } from "@/lib/table/dogs";
 import useClientTable from "@/hooks/use-client-table";
 import { DataTableToolbar } from "./client-table/data-table-toolbar";
 import { TasksTableToolbarActions } from "./dog-table/tasks-table-toolbar-actions";
+import { dogTableColumnMap } from "@/lib/table/mapper";
 
 export default function DogTableClient({
   dogsPromise,
@@ -20,7 +21,11 @@ export default function DogTableClient({
   return (
     <div className="container mx-auto">
       <DataTable table={table}>
-        <DataTableToolbar table={table}>
+        <DataTableToolbar
+          table={table}
+          search={{ label: "name", columnId: "name" }}
+          columnMapper={dogTableColumnMap}
+        >
           <TasksTableToolbarActions table={table} />
         </DataTableToolbar>
       </DataTable>
