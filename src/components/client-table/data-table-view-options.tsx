@@ -22,6 +22,10 @@ export function DataTableViewOptions<TData>({
   table,
   columnMapper,
 }: DataTableViewOptionsProps<TData>) {
+  const getMappedName = (columnId: string) => {
+    return columnMapper ? (columnMapper[columnId] ?? columnId) : columnId;
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -51,9 +55,7 @@ export function DataTableViewOptions<TData>({
                 checked={column.getIsVisible()}
                 onCheckedChange={(value) => column.toggleVisibility(!!value)}
               >
-                {columnMapper
-                  ? (columnMapper[column.id] ?? column.id)
-                  : column.id}
+                {getMappedName(column.id)}
               </DropdownMenuCheckboxItem>
             );
           })}

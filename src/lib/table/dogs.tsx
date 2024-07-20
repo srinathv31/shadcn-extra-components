@@ -50,12 +50,20 @@ export const columns: ColumnDef<Dog>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Age" />
     ),
+    filterFn: (row, id, value) => {
+      const rowValue = (row.getValue(id) as string).toString();
+      return rowValue.includes(value.toString());
+    },
   },
   {
     accessorKey: "weight",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Weight" />
     ),
+    filterFn: (row, id, value) => {
+      const rowValue = (row.getValue(id) as string).toString();
+      return rowValue.includes(value.toString());
+    },
   },
   {
     accessorKey: "breed",
@@ -63,6 +71,9 @@ export const columns: ColumnDef<Dog>[] = [
     cell: ({ row }) => {
       const val = "" + row.getValue("breed");
       return <p className="w-36">{val}</p>;
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
     },
   },
   {
