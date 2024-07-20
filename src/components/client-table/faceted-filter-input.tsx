@@ -52,21 +52,23 @@ export default function FacetedFilterInput<TData, TValue>({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[150px] lg:w-[250px] p-0" align="start">
-        <Trash
-          onClick={() => {
-            column?.setFilterValue(undefined);
-            setFilteredColumns((curr) =>
-              curr.filter((col) => col !== column?.id),
-            );
-          }}
-          className="absolute top-2 right-2 h-4 w-4 text-muted-foreground hover:text-red-500 cursor-pointer"
-        />
-        <Input
-          placeholder={placeholder ?? `Search by ${title}...`}
-          value={(column?.getFilterValue() as string) ?? ""}
-          onChange={(event) => column?.setFilterValue(event.target.value)}
-          className=" focus-visible:ring-1 focus-visible:ring-gray-400 focus-visible:ring-offset-0"
-        />
+        <div className="relative flex items-center">
+          <Input
+            placeholder={placeholder ?? `Search by ${title}...`}
+            value={(column?.getFilterValue() as string) ?? ""}
+            onChange={(event) => column?.setFilterValue(event.target.value)}
+            className="pr-10 focus-visible:ring-1 focus-visible:ring-gray-400 focus-visible:ring-offset-0"
+          />
+          <Trash
+            onClick={() => {
+              column?.setFilterValue(undefined);
+              setFilteredColumns((curr) =>
+                curr.filter((col) => col !== column?.id),
+              );
+            }}
+            className="absolute right-2 h-4 w-4 text-muted-foreground hover:text-red-500 cursor-pointer"
+          />
+        </div>
       </PopoverContent>
     </Popover>
   );
