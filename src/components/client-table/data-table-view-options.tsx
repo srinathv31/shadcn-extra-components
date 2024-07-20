@@ -12,16 +12,19 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { useContext } from "react";
+import { ToolbarContext } from "./context/ToolbarContext";
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;
-  columnMapper?: Record<string, string>;
 }
 
 export function DataTableViewOptions<TData>({
   table,
-  columnMapper,
 }: DataTableViewOptionsProps<TData>) {
+  const toolbarProps = useContext(ToolbarContext);
+  const { columnMapper } = toolbarProps ?? {};
+
   const getMappedName = (columnId: string) => {
     return columnMapper ? (columnMapper[columnId] ?? columnId) : columnId;
   };
