@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { Trash } from "lucide-react";
+import { useContext } from "react";
+import { FacetedFilterContext } from "./context/FacetedFilterContext";
 
 interface FacetedFilterSelectProps<TData, TValue> {
   selectedValues: Set<string | boolean>;
@@ -28,7 +30,6 @@ interface FacetedFilterSelectProps<TData, TValue> {
     value: string | boolean;
     icon?: React.ComponentType<{ className?: string }>;
   }[];
-  setFilteredColumns: React.Dispatch<React.SetStateAction<string[]>>;
   column?: Column<TData, TValue>;
   title?: string;
   facets?: Map<string | boolean, number>;
@@ -40,8 +41,10 @@ export default function FacetedFilterSelect<TData, TValue>({
   options,
   selectedValues,
   facets,
-  setFilteredColumns,
 }: FacetedFilterSelectProps<TData, TValue>) {
+  const setFilteredColumns =
+    useContext(FacetedFilterContext)!.setFilteredColumns;
+
   return (
     <Popover>
       <PopoverTrigger asChild>

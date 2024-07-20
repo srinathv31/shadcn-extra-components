@@ -14,6 +14,7 @@ import { Filter } from "lucide-react";
 import { useContext, useState } from "react";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { ToolbarContext } from "./context/ToolbarContext";
+import { FacetedFilterContext } from "./context/FacetedFilterContext";
 
 export default function DataTableFilterList<TData>({
   table,
@@ -52,17 +53,18 @@ export default function DataTableFilterList<TData>({
 
         return (
           <>
-            {table.getColumn(columnId) ? (
-              <DataTableFacetedFilter
-                key={columnId}
-                column={table.getColumn(columnId)}
-                title={title}
-                options={options}
-                deriveOptions={deriveOptions}
-                placeholder={placeholder}
-                setFilteredColumns={setFilteredColumns}
-              />
-            ) : null}
+            <FacetedFilterContext.Provider value={{ setFilteredColumns }}>
+              {table.getColumn(columnId) ? (
+                <DataTableFacetedFilter
+                  key={columnId}
+                  column={table.getColumn(columnId)}
+                  title={title}
+                  options={options}
+                  deriveOptions={deriveOptions}
+                  placeholder={placeholder}
+                />
+              ) : null}
+            </FacetedFilterContext.Provider>
           </>
         );
       })}

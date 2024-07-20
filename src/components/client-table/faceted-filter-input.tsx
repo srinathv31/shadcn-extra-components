@@ -5,10 +5,10 @@ import { Separator } from "../ui/separator";
 import { Badge } from "../ui/badge";
 import { Input } from "../ui/input";
 import { Column } from "@tanstack/react-table";
+import { useContext } from "react";
+import { FacetedFilterContext } from "./context/FacetedFilterContext";
 
 interface FacetedFilterInputProps<TData, TValue> {
-  setFilteredColumns: React.Dispatch<React.SetStateAction<string[]>>;
-
   column?: Column<TData, TValue>;
   title?: string;
   searchInput?: string | string[];
@@ -20,8 +20,10 @@ export default function FacetedFilterInput<TData, TValue>({
   title,
   searchInput,
   placeholder,
-  setFilteredColumns,
 }: FacetedFilterInputProps<TData, TValue>) {
+  const setFilteredColumns =
+    useContext(FacetedFilterContext)!.setFilteredColumns;
+
   return (
     <Popover>
       <PopoverTrigger asChild>
