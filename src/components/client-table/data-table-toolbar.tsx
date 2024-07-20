@@ -49,7 +49,7 @@ export function DataTableToolbar<TData>({
                 }
                 onChange={(event) =>
                   table
-                    .getColumn(search.label)
+                    .getColumn(search.columnId)
                     ?.setFilterValue(event.target.value)
                 }
                 className="h-8 w-[150px] lg:w-[250px]"
