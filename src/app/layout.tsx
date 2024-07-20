@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ModeToggle } from "@/components/ui/dark-mode-toggle";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +28,8 @@ export default function RootLayout({
         >
           <header className="h-20 border-b border-gray-200 flex justify-between items-center px-10">
             <p className="text-lg">TABLE</p>
+            <Link href="/">Dogs</Link>
+            <Link href="/cars">Cars</Link>
             <ModeToggle />
           </header>
           {children}
