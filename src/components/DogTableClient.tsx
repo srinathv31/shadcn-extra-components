@@ -1,6 +1,6 @@
 "use client";
 
-import { getDogs } from "@/lib/dogs";
+import { getDogs } from "@/lib/db/dogs";
 import { use } from "react";
 import { DataTable } from "./client-table/data-table";
 import { columns } from "@/lib/table/dogs";

@@ -1,5 +1,5 @@
 import DogTableClient from "@/components/DogTableClient";
-import { getDogs } from "@/lib/dogs";
+import { getDogs } from "@/lib/db/dogs";
 import { Suspense } from "react";
 
 export default function Home() {

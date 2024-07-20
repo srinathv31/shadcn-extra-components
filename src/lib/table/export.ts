@@ -37,6 +37,7 @@ export function exportTableToCSV<TData>(
   const headers = table
     .getAllLeafColumns()
     .map((column) => column.id)
+    // @ts-expect-error - We know that the column IDs are strings
     .filter((id) => !excludeColumns.includes(id));
 
   // Build CSV content

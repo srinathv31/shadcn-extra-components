@@ -1,5 +1,5 @@
 import { Dog } from "@/interfaces/Dog";
-import { query } from "./db/postgres";
+import { query } from "./postgres";
 
 export async function getDogs() {
   const dogs = await query<Dog>(
