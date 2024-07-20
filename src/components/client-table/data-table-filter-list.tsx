@@ -51,10 +51,13 @@ export default function DataTableFilterList<TData>({
         const deriveOptions = filter?.deriveOptions;
         const title = filter?.label ?? columnName;
         const placeholder = filter?.placeholder;
+        const iconFn = filter?.iconFn;
 
         return (
           <>
-            <FacetedFilterContext.Provider value={{ setFilteredColumns }}>
+            <FacetedFilterContext.Provider
+              value={{ setFilteredColumns, iconFn }}
+            >
               {table.getColumn(columnId) ? (
                 <DataTableFacetedFilter
                   key={columnId}

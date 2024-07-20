@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface Option {
   label: string;
   value: string | boolean;
@@ -14,11 +16,13 @@ interface BaseDataTableFilterField<TData> {
 interface OptionsFilterField<TData> extends BaseDataTableFilterField<TData> {
   options: Option[];
   deriveOptions?: never; // Explicitly set to `never` to enforce the constraint
+  iconFn?: never; // Explicitly set to `never` to enforce the constraint
 }
 
 interface DeriveOptionsFilterField<TData>
   extends BaseDataTableFilterField<TData> {
   deriveOptions?: boolean;
+  iconFn?: (value: string) => ReactNode;
   options?: never; // Explicitly set to `never` to enforce the constraint
 }
 

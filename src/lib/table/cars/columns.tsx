@@ -12,6 +12,7 @@ import {
 import { Car } from "@/interfaces/Car"; // Ensure this interface is defined as per the previous response
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
+import { getCarColorIcon } from "./options";
 
 export const carColumns: ColumnDef<Car>[] = [
   {
@@ -73,7 +74,13 @@ export const carColumns: ColumnDef<Car>[] = [
     header: "Color",
     cell: ({ row }) => {
       const val = "" + row.getValue("color");
-      return <p className="w-24">{val}</p>;
+      const colorIcon = getCarColorIcon(val);
+      return (
+        <div className="flex items-center">
+          {colorIcon}
+          <p className="w-24">{val}</p>
+        </div>
+      );
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));

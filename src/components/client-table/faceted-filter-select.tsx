@@ -45,6 +45,8 @@ export default function FacetedFilterSelect<TData, TValue>({
   const setFilteredColumns =
     useContext(FacetedFilterContext)!.setFilteredColumns;
 
+  const iconFn = useContext(FacetedFilterContext)!.iconFn;
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -131,9 +133,10 @@ export default function FacetedFilterSelect<TData, TValue>({
                     >
                       <CheckIcon className={cn("h-4 w-4")} />
                     </div>
-                    {option.icon ? (
-                      <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-                    ) : null}
+                    {iconFn?.("" + option.value) ??
+                      (option.icon ? (
+                        <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                      ) : null)}
                     <span>{option.label}</span>
                     {facets?.get(option.value) && (
                       <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">

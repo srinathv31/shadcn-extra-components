@@ -2,8 +2,15 @@ import { Car } from "@/interfaces/Car";
 import { DataTableFilterField } from "@/interfaces/table";
 import { Circle } from "lucide-react";
 
-function getCarColorIcon(color: keyof Car["color"]) {
-  return <Circle size={16} color={color.toString()} />;
+export function getCarColorIcon(color: string) {
+  return (
+    <Circle
+      size={16}
+      color="#f4f4f4"
+      fill={color}
+      className="mr-2 h-4 w-4 text-muted-foreground"
+    />
+  );
 }
 
 export const carFilterOptions: DataTableFilterField<Car>[] = [
@@ -31,5 +38,6 @@ export const carFilterOptions: DataTableFilterField<Car>[] = [
     label: "Color",
     value: "color",
     deriveOptions: true,
+    iconFn: getCarColorIcon,
   },
 ];
