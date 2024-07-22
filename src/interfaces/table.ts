@@ -8,7 +8,6 @@ export interface Option {
 }
 
 interface BaseDataTableFilterField<TData> {
-  label: string;
   value: keyof TData;
   placeholder?: string;
 }

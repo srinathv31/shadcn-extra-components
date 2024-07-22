@@ -78,17 +78,14 @@ function getStatusIcon(status: Dog["vaccination_status"]) {
 
 export const dogFilterOptions: DataTableFilterField<Dog>[] = [
   {
-    label: "Microchip ID",
     value: "microchip_id",
     placeholder: "Filter id...",
   },
   {
-    label: "Owner",
     value: "owner_name",
     placeholder: "Filter owner...",
   },
   {
-    label: "Energy",
     value: "energy_level",
     options: ["High", "Medium", "Low"].map((energy) => ({
       label: energy,
@@ -98,12 +95,10 @@ export const dogFilterOptions: DataTableFilterField<Dog>[] = [
     })),
   },
   {
-    label: "Breed",
     value: "breed",
     deriveOptions: true,
   },
   {
-    label: "Vaccination",
     value: "vaccination_status",
     options: ["Yes", "No"].map((status) => ({
       label: status,

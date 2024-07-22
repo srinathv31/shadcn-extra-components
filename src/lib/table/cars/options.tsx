@@ -15,33 +15,27 @@ export function getCarColorIcon(color: string) {
 
 export const carFilterOptions: DataTableFilterField<Car>[] = [
   {
-    label: "Owner Contact",
     value: "owner_contact",
     placeholder: "Email...",
   },
   {
-    label: "Owner",
     value: "owner_name",
     placeholder: "Filter owner...",
   },
   {
-    label: "Make",
     value: "make",
     deriveOptions: true,
   },
   {
-    label: "Model",
     value: "model",
     deriveOptions: true,
   },
   {
-    label: "Color",
     value: "color",
     deriveOptions: true,
     iconFn: getCarColorIcon,
   },
   {
-    label: "Year",
     value: "year",
     placeholder: "Search Year...",
   },
