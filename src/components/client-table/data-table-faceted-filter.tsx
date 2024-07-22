@@ -2,6 +2,8 @@ import { Column } from "@tanstack/react-table";
 
 import FacetedFilterInput from "./faceted-filter-input";
 import FacetedFilterSelect from "./faceted-filter-select";
+import { useContext } from "react";
+import { ToolbarContext } from "./context/ToolbarContext";
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
@@ -22,6 +24,7 @@ export function DataTableFacetedFilter<TData, TValue>({
   deriveOptions,
   placeholder,
 }: DataTableFacetedFilterProps<TData, TValue>) {
+  const enums = useContext(ToolbarContext)?.enums;
   const facets = column?.getFacetedUniqueValues();
 
   const convertFacetsMapToArray = () =>
@@ -33,11 +36,23 @@ export function DataTableFacetedFilter<TData, TValue>({
         }))
       : [];
 
-  // If options are not provided, derive them from the column's unique values
+  const getEnumOptions = (columnId: string) => {
+    return columnId && enums
+      ? enums[columnId].map((enumValue) => ({
+          label: enumValue,
+          value: enumValue,
+          icon: undefined,
+        }))
+      : [];
+  };
+
+  // If options are not provided, derive them from the enums or column's unique values. Else, return an empty array.
   const filterOptions = options
     ? options
     : deriveOptions
-      ? convertFacetsMapToArray()
+      ? enums
+        ? getEnumOptions(column?.id as string)
+        : convertFacetsMapToArray()
       : [];
 
   const searchInput = column?.getFilterValue() as string | string[] | undefined;

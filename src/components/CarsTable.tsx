@@ -9,15 +9,27 @@ import { carColumns } from "@/lib/table/cars/columns";
 import { CarsTableToolbarActions } from "./car-table/cars-table-toolbar-actions";
 import { carTableColumnMap } from "@/lib/table/cars/column-mapper";
 import { carFilterOptions } from "@/lib/table/cars/options";
+import { useServerTable } from "@/hooks/use-server-table";
 
 export default function CarsTable({
   carsPromise,
 }: {
   carsPromise: ReturnType<typeof getCars>;
 }) {
-  const cars = use(carsPromise);
+  const { cars, pageCount, enums } = use(carsPromise);
 
-  const { table } = useClientTable({ data: cars, columns: carColumns });
+  //   const { table } = useClientTable({ data: cars, columns: carColumns });
+
+  const { table } = useServerTable({
+    data: cars,
+    columns: carColumns,
+    pageCount,
+    // optional props
+    filterFields: carFilterOptions,
+    // enableAdvancedFilter: featureFlags.includes("advancedFilter"),
+    defaultPerPage: 10,
+    defaultSort: "last_service_date.desc",
+  });
 
   return (
     <div className="container mx-auto">
@@ -27,6 +39,7 @@ export default function CarsTable({
           search={{ label: "Owner", columnId: "owner_name" }}
           columnMapper={carTableColumnMap}
           filterOptions={carFilterOptions}
+          enums={enums}
         >
           <CarsTableToolbarActions table={table} />
         </DataTableToolbar>

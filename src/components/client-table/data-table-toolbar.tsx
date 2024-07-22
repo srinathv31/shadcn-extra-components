@@ -16,6 +16,13 @@ export interface DataTableToolbarProps<TData> {
   search?: { label: string; columnId: string };
   columnMapper?: Record<string, string>;
   filterOptions?: DataTableFilterField<TData>[];
+
+  /**
+   * The enums for the table.
+   * @default undefined
+   * @type Record<string, string[]>
+   */
+  enums?: Record<string, string[]>;
   children?: React.ReactNode;
 }
 
@@ -24,6 +31,7 @@ export function DataTableToolbar<TData>({
   search,
   columnMapper,
   filterOptions,
+  enums,
   children,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
@@ -34,6 +42,7 @@ export function DataTableToolbar<TData>({
         table,
         columnMapper,
         filterOptions,
+        enums,
       }}
     >
       <div className="flex flex-col">

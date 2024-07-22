@@ -40,4 +40,9 @@ export const carFilterOptions: DataTableFilterField<Car>[] = [
     deriveOptions: true,
     iconFn: getCarColorIcon,
   },
+  {
+    label: "Year",
+    value: "year",
+    placeholder: "Search Year...",
+  },
 ];
