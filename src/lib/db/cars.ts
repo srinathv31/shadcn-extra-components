@@ -26,7 +26,8 @@ export async function getCars(searchParams: GetCarsSchema) {
     "desc",
   ]) as [keyof Car | undefined, "asc" | "desc" | undefined];
 
-  const whereClause = buildWhereClause(searchParams);
+  const { query: whereClause, values: whereValues } =
+    buildWhereClause(searchParams);
   console.log("🚀 ~ getCars ~ whereClause:", whereClause);
 
   const carsQuery = `
@@ -34,7 +35,7 @@ export async function getCars(searchParams: GetCarsSchema) {
       FROM car_owners
       WHERE ${whereClause}
       ORDER BY ${column} ${order}
-      OFFSET $1 LIMIT $2;
+      OFFSET $${whereValues.length + 1} LIMIT $${whereValues.length + 2};
     `;
 
   const countQuery = `
@@ -44,9 +45,16 @@ export async function getCars(searchParams: GetCarsSchema) {
     `;
 
   try {
-    const cars = await query<Car>(carsQuery, [offset, per_page]);
+    const cars = await query<Car>(carsQuery, [
+      ...whereValues,
+      offset,
+      per_page,
+    ]);
 
-    const totalCountResult = await query<{ total_count: number }>(countQuery);
+    const totalCountResult = await query<{ total_count: number }>(
+      countQuery,
+      whereValues,
+    );
     const totalCount = totalCountResult[0].total_count;
     const pageCount = Math.ceil(totalCount / per_page);
 
@@ -62,13 +70,14 @@ export async function getCars(searchParams: GetCarsSchema) {
 const buildWhereClause = (input: GetCarsSchema) => {
   const { model, color, make, from, to, operator, year, owner_name } = input;
   const conditions: string[] = [];
+  const values: any[] = [];
+  let valueIndex = 1;
 
-  const parseMultipleOptions = (field: string, values: string) => {
-    const options = values
-      .split(".")
-      .map((v) => `'${v}'`)
-      .join(", ");
-    return `${field} IN (${options})`;
+  const parseMultipleOptions = (field: string, valueString: string) => {
+    const options = valueString.split(".");
+    const placeholders = options.map(() => `$${valueIndex++}`).join(", ");
+    options.forEach((option) => values.push(option));
+    return `${field} IN (${placeholders})`;
   };
 
   if (model) {
@@ -88,17 +97,23 @@ const buildWhereClause = (input: GetCarsSchema) => {
   }
 
   if (owner_name) {
-    // Use ILIKE for case-insensitive partial match
-    conditions.push(`owner_name ILIKE '%${owner_name}%'`);
+    conditions.push(`owner_name ILIKE $${valueIndex}`);
+    values.push(`%${owner_name}%`);
+    valueIndex++;
   }
 
   if (from && to) {
-    conditions.push(`created_at BETWEEN '${from}' AND '${to}'`);
+    conditions.push(`created_at BETWEEN $${valueIndex} AND $${valueIndex + 1}`);
+    values.push(from, to);
+    valueIndex += 2;
   }
 
-  return conditions.length > 0
-    ? conditions.join(` ${operator ? operator.toUpperCase() : "AND"} `)
-    : "1=1";
+  const query =
+    conditions.length > 0
+      ? conditions.join(` ${operator ? operator.toUpperCase() : "AND"} `)
+      : "1=1";
+
+  return { query, values };
 };
 
 export async function getDistinctCarAttributes() {
