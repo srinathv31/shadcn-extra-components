@@ -10,6 +10,7 @@ import { CarsTableToolbarActions } from "./car-table/cars-table-toolbar-actions"
 import { carTableColumnMap } from "@/lib/table/cars/column-mapper";
 import { carFilterOptions } from "@/lib/table/cars/options";
 import { useServerTable } from "@/hooks/use-server-table";
+import { DateRangePicker } from "./client-table/date-range-picker";
 
 export default function CarsTable({
   carsPromise,
@@ -33,6 +34,11 @@ export default function CarsTable({
 
   return (
     <div className="container mx-auto">
+      <DateRangePicker
+        triggerSize="sm"
+        triggerClassName="ml-auto w-56 sm:w-60"
+        align="end"
+      />
       <DataTable table={table}>
         <DataTableToolbar
           table={table}

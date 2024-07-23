@@ -13,7 +13,7 @@ import { ToolbarContext } from "./context/ToolbarContext";
 
 export interface DataTableToolbarProps<TData> {
   table: Table<TData>;
-  search?: { label: string; columnId: string };
+  search?: { label: string; columnId: keyof TData };
   columnMapper?: Record<string, string>;
   filterOptions?: DataTableFilterField<TData>[];
 
@@ -53,12 +53,12 @@ export function DataTableToolbar<TData>({
                 placeholder={`Search by ${search.label}...`}
                 value={
                   (table
-                    .getColumn(search.columnId)
+                    .getColumn(String(search.columnId))
                     ?.getFilterValue() as string) ?? ""
                 }
                 onChange={(event) =>
                   table
-                    .getColumn(search.columnId)
+                    .getColumn(String(search.columnId))
                     ?.setFilterValue(event.target.value)
                 }
                 className="h-8 w-[150px] lg:w-[250px]"

@@ -31,7 +31,9 @@ export default function DataTableFilterList<TData>({
     .getAllColumns()
     .filter(
       (column) =>
-        typeof column.accessorFn !== "undefined" && column.getCanHide(),
+        typeof column.accessorFn !== "undefined" &&
+        column.getCanHide() &&
+        filterOptions?.find((option) => option.value === column.id),
     );
 
   const getMappedName = (columnId: string) => {
@@ -49,7 +51,6 @@ export default function DataTableFilterList<TData>({
 
         const options = filter?.options;
         const deriveOptions = filter?.deriveOptions;
-        const title = filter?.label ?? columnName;
         const placeholder = filter?.placeholder;
         const iconFn = filter?.iconFn;
 
@@ -62,7 +63,7 @@ export default function DataTableFilterList<TData>({
                 <DataTableFacetedFilter
                   key={columnId}
                   column={table.getColumn(columnId)}
-                  title={title}
+                  title={columnName}
                   options={options}
                   deriveOptions={deriveOptions}
                   placeholder={placeholder}
