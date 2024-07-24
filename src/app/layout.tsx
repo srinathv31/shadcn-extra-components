@@ -30,6 +30,7 @@ export default function RootLayout({
             <p className="text-lg">TABLE</p>
             <Link href="/">Dogs</Link>
             <Link href="/cars">Cars</Link>
+            <Link href="/stepper">Stepper</Link>
             <ModeToggle />
           </header>
           {children}
