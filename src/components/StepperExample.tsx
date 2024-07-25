@@ -9,6 +9,11 @@ const steps = [
   { label: "Step 3" },
 ] satisfies StepItem[];
 
+const stepRender: { [key: string]: JSX.Element } = {
+  "0": <UserForm />,
+  "1": <UserConfirm />,
+  "2": <UserProcessing />,
+};
 export default function StepperExample() {
   return (
     <div className="flex w-full flex-col gap-4">
@@ -26,11 +31,9 @@ export default function StepperExample() {
               <div className="h-fit flex items-center justify-center my-2 border bg-secondary text-primary rounded-md">
                 <h1 className="text-xl">Step {index + 1}</h1>
                 <div className="flex flex-col">
-                  {[...Array(10)].map((_, i) => (
-                    <div key={i} className="border bg-white rounded m-3">
-                      <p>Content {i + 1}</p>
-                    </div>
-                  ))}
+                  <div className="border bg-white rounded m-3">
+                    {stepRender[index.toString()]}
+                  </div>
                 </div>
               </div>
             </Step>
@@ -83,3 +86,37 @@ const Footer = () => {
     </>
   );
 };
+
+function UserForm() {
+  return (
+    <form>
+      <div>
+        <label htmlFor="name">Name</label>
+        <input type="text" id="name" />
+      </div>
+      <div>
+        <label htmlFor="email">Email</label>
+        <input type="email" id="email" />
+      </div>
+      <div>
+        <label htmlFor="password">Password</label>
+        <input type="password" id="password" />
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+
+function UserConfirm() {
+  return (
+    <div>
+      <p>Name: John Doe</p>
+      <p>Email:</p>
+      <button>Confirm</button>
+    </div>
+  );
+}
+
+function UserProcessing() {
+  return <div>Processing...</div>;
+}
