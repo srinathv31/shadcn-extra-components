@@ -17,3 +17,14 @@ export const searchParamsSchema = z.object({
 export const getCarsSchema = searchParamsSchema;
 
 export type GetCarsSchema = z.infer<typeof getCarsSchema>;
+
+export const updateCarSchema = z.object({
+  id: z.string(),
+  model: z.string(),
+  make: z.string(),
+  year: z.string(),
+  color: z.string(),
+  owner_name: z.string(),
+});
+
+export type UpdateCarSchema = z.infer<typeof updateCarSchema>;

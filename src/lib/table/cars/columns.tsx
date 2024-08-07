@@ -13,6 +13,8 @@ import { Car } from "@/interfaces/Car"; // Ensure this interface is defined as p
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { getCarColorIcon } from "./options";
+import { useState, useTransition } from "react";
+import { UpdateTaskSheet } from "@/components/car-table/edit-cars-sheet";
 
 export const carColumns: ColumnDef<Car>[] = [
   {
@@ -131,26 +133,40 @@ export const carColumns: ColumnDef<Car>[] = [
     cell: ({ row }) => {
       const car = row.original;
 
+      const [isUpdatePending, startUpdateTransition] = useTransition();
+      const [showUpdateTaskSheet, setShowUpdateTaskSheet] = useState(false);
+      const [showDeleteTaskDialog, setShowDeleteTaskDialog] = useState(false);
+
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(car.id)}
-            >
-              Copy car ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View owner</DropdownMenuItem>
-            <DropdownMenuItem>View car details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <>
+          <UpdateTaskSheet
+            open={showUpdateTaskSheet}
+            onOpenChange={setShowUpdateTaskSheet}
+            car={row.original}
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem onSelect={() => setShowUpdateTaskSheet(true)}>
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(car.id)}
+              >
+                Copy car ID
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>View owner</DropdownMenuItem>
+              <DropdownMenuItem>View car details</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </>
       );
     },
   },
