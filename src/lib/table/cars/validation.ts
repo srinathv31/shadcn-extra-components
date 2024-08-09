@@ -28,3 +28,10 @@ export const updateCarSchema = z.object({
 });
 
 export type UpdateCarSchema = z.infer<typeof updateCarSchema>;
+
+export const createCarSchema = z.object({
+  model: z.string(),
+  make: z.string(),
+});
+
+export type CreateCarSchema = z.infer<typeof createCarSchema>;

@@ -5,6 +5,9 @@ import { type Table } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
 import { exportTableToCSV } from "@/lib/table/export";
+import { useMemo } from "react";
+import { Car } from "@/interfaces/Car";
+import AddCardDialog from "./add-car-dialog";
 
 // import { CreateTaskDialog } from "./create-task-dialog"
 // import { DeleteTasksDialog } from "./delete-tasks-dialog"
@@ -16,6 +19,17 @@ interface TasksTableToolbarActionsProps<TData> {
 export function CarsTableToolbarActions<TData>({
   table,
 }: TasksTableToolbarActionsProps<TData>) {
+  // grab all the selected rows
+  const selectedCars = table
+    .getFilteredSelectedRowModel()
+    .rows.map((row) => row.original as Car);
+
+  // extract the ids of the selected cars, useMemo is used to avoid re-computing the selectedCarsIds on every render
+  const selectedCarsIds = useMemo(
+    () => selectedCars.map((car) => car.id),
+    [selectedCars],
+  );
+
   return (
     <div className="flex items-center gap-2">
       {/* {table.getFilteredSelectedRowModel().rows.length > 0 ? (
@@ -27,6 +41,7 @@ export function CarsTableToolbarActions<TData>({
         />
       ) : null}
       <CreateTaskDialog /> */}
+      <AddCardDialog />
       <Button
         variant="outline"
         size="sm"
