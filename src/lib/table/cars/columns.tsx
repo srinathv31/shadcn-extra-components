@@ -13,6 +13,7 @@ import { Car } from "@/interfaces/Car"; // Ensure this interface is defined as p
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { getCarColorIcon } from "./options";
+import Link from "next/link";
 
 export const carColumns: ColumnDef<Car>[] = [
   {
@@ -42,7 +43,7 @@ export const carColumns: ColumnDef<Car>[] = [
     header: "Make",
     cell: ({ row }) => {
       const val = "" + row.getValue("make");
-      return <p className="w-36">{val}</p>;
+      return <Link href={`/cars/${row.original.id}`}>{val}</Link>;
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));

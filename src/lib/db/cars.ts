@@ -12,6 +12,16 @@ export async function getCarsClient() {
   return dogs;
 }
 
+export async function getCarById(id: string) {
+  const cars = await query<Car>(
+    `
+        SELECT * FROM car_owners WHERE id = $1
+        `,
+    [id],
+  );
+  return cars[0];
+}
+
 export async function getCars(searchParams: GetCarsSchema) {
   const { page, per_page, sort } = searchParams;
   console.log("🚀 ~ getCars ~ searchParams:", searchParams);
