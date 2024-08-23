@@ -13,7 +13,7 @@ import { ToolbarContext } from "./context/ToolbarContext";
 
 export interface DataTableToolbarProps<TData> {
   table: Table<TData>;
-  search?: { label: string; columnId: string };
+  search?: { label: string; columnId: keyof TData };
   columnMapper?: Record<string, string>;
   filterOptions?: DataTableFilterField<TData>[];
 

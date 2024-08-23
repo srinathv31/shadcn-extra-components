@@ -11,7 +11,7 @@ export default async function CustomerList() {
   const customers = await getCustomers();
 
   return (
-    <div>
+    <div className="overflow-y-auto h-1/2">
       {customers.map((customer) => (
         <div key={customer._id} className="border p-3 m-2 rounded bg-white">
           <p>{customer.name}</p>

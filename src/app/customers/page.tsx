@@ -1,17 +1,26 @@
-import CreateCustomerDialog from "@/components/CreateCustomerDialog";
-import CustomerList from "@/components/CustomerList";
+import CustomersTable from "@/components/customers/CustomerTable";
+import { getCustomers } from "@/lib/db/customers";
+import { customerSearchParamsSchema } from "@/lib/table/customers/validation";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
-export default function CustomersPage() {
+export interface IndexPageProps {
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export default function CustomersPage({ searchParams }: IndexPageProps) {
+  const search = customerSearchParamsSchema.parse(searchParams);
+  console.log("🚀 ~ CustomersPage ~ searchParams:", searchParams);
+
+  const customersPromise = getCustomers(search);
+
   return (
-    <div className="flex flex-col h-[90vh] items-center justify-center">
+    <div className="flex justify-center items-center overflow-scroll m-10">
       <ErrorBoundary fallback={<p>Error ❌</p>}>
         <Suspense fallback={<p>Loading Customers... ⏳</p>}>
-          <CustomerList />
+          <CustomersTable customersPromise={customersPromise} />
         </Suspense>
       </ErrorBoundary>
-      <CreateCustomerDialog />
     </div>
   );
 }

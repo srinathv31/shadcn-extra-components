@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-export interface ICustomer {
+export interface ICustomer extends mongoose.Document {
   _id: string;
   name: string;
   email?: string;
