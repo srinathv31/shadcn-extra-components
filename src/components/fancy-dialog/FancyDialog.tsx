@@ -29,29 +29,29 @@ export default function Component() {
         <DialogHeader>
           <DialogTitle>Quality Testing Application - Sample Detail</DialogTitle>
         </DialogHeader>
-        <div className="grid grid-cols-4 gap-4 mb-4">
+        <div className="grid grid-cols-4 gap-4 mb-4 text-sm">
           <div>
-            <Label htmlFor="id">ID</Label>
-            <Input id="id" value="100123090101" readOnly />
+            <Label className="text-muted-foreground">ID</Label>
+            <p className="font-medium">100123090101</p>
           </div>
           <div>
-            <Label htmlFor="application-number">Application Number</Label>
-            <Input id="application-number" value="20022233346692" readOnly />
+            <Label className="text-muted-foreground">Application Number</Label>
+            <p className="font-medium">20022233346692</p>
           </div>
           <div>
-            <Label htmlFor="name">Name</Label>
-            <Input id="name" value="John Smith1" readOnly />
+            <Label className="text-muted-foreground">Name</Label>
+            <p className="font-medium">John Smith1</p>
           </div>
           <div>
-            <Label htmlFor="reviewer">Reviewer</Label>
-            <Input id="reviewer" value="Heimer, A" readOnly />
+            <Label className="text-muted-foreground">Reviewer</Label>
+            <p className="font-medium">Heimer, A</p>
           </div>
           <div>
-            <Label htmlFor="review-date">Review Date</Label>
-            <Input id="review-date" type="date" value="2023-03-31" readOnly />
+            <Label className="text-muted-foreground">Review Date</Label>
+            <p className="font-medium">3/31/23</p>
           </div>
           <div>
-            <Label htmlFor="conclusion">Conclusion</Label>
+            <Label className="text-muted-foreground">Conclusion</Label>
             <Select defaultValue="pass">
               <SelectTrigger id="conclusion">
                 <SelectValue placeholder="Select conclusion" />
@@ -63,7 +63,7 @@ export default function Component() {
             </Select>
           </div>
           <div>
-            <Label htmlFor="status">Status</Label>
+            <Label className="text-muted-foreground">Status</Label>
             <Select defaultValue="complete">
               <SelectTrigger id="status">
                 <SelectValue placeholder="Select status" />
