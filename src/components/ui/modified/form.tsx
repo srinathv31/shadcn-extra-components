@@ -16,70 +16,84 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 
-// 1) Create a context for storing the Zod schema.
-const FormSchemaContext = React.createContext<z.ZodObject<any> | undefined>(
+// ----------------------------------------------------------------------------
+// 1) A Context + <Form> wrapper that accepts a Zod schema (including .refine())
+// ----------------------------------------------------------------------------
+
+const FormSchemaContext = React.createContext<z.ZodTypeAny | undefined>(
   undefined,
 );
 
-// Helper to read it.
-function useFormSchema() {
+/**
+ * Access the Zod schema from anywhere.
+ */
+export function useFormSchema() {
   return React.useContext(FormSchemaContext);
 }
 
-// 2) Wrap FormProvider so we can pass in our schema.
-type ExtendedFormProps = Omit<
-  React.ComponentPropsWithoutRef<typeof FormProvider>,
-  "children"
-> & {
-  children: React.ReactNode;
-  schema?: z.ZodObject<any>;
+/**
+ * Custom <Form> that:
+ * - wraps FormProvider from RHF
+ * - passes a (possibly refined) Zod schema via context
+ */
+type ExtendedFormProps = React.ComponentPropsWithoutRef<typeof FormProvider> & {
+  schema?: z.ZodTypeAny;
 };
 
-/**
- * Custom <Form> component that:
- * - Provides the Zod schema via context
- * - Internally uses <FormProvider> from react-hook-form
- */
-function Form({ schema, children, ...props }: ExtendedFormProps) {
+function Form({ schema, children, ...formProps }: ExtendedFormProps) {
   return (
     <FormSchemaContext.Provider value={schema}>
-      <FormProvider {...props}>{children}</FormProvider>
+      <FormProvider {...formProps}>{children}</FormProvider>
     </FormSchemaContext.Provider>
   );
 }
 
-// 3) Extend FormField to derive whether the field is required
+// ----------------------------------------------------------------------------
+// 2) The "unwrap" logic to remove ZodEffects layers
+// ----------------------------------------------------------------------------
+
+function unwrapEffects(schema: z.ZodTypeAny): z.ZodTypeAny {
+  while (schema instanceof z.ZodEffects) {
+    schema = schema._def.schema;
+  }
+  return schema;
+}
+
+// ----------------------------------------------------------------------------
+// 3) <FormField> that derives isRequired from the (unwrapped) schema
+// ----------------------------------------------------------------------------
+
 type FormFieldContextValue<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>,
 > = {
   name: TName;
   isRequired: boolean;
 };
 
-const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue,
-);
-
-type CustomFormFieldProps<
-  TFieldValues extends FieldValues,
-  TName extends FieldPath<TFieldValues>,
-> = ControllerProps<TFieldValues, TName> & {
-  name: TName;
-};
+const FormFieldContext = React.createContext<FormFieldContextValue<
+  any,
+  any
+> | null>(null);
 
 function FormField<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->({ name, ...props }: CustomFormFieldProps<TFieldValues, TName>) {
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>,
+>({ name, ...props }: ControllerProps<TFieldValues, TName>) {
   const schema = useFormSchema();
-
-  // default = not required
   let isRequired = false;
-  if (schema?.shape?.[name]) {
-    const fieldSchema = schema.shape[name] as z.ZodTypeAny;
-    // Check optional & nullable
-    isRequired = !fieldSchema.isOptional() && !fieldSchema.isNullable();
+
+  if (schema) {
+    // Remove .refine(), .transform(), etc., so we (hopefully) get a ZodObject.
+    const unwrapped = unwrapEffects(schema);
+    if (unwrapped instanceof z.ZodObject) {
+      // If it's truly an object, we can look up the shape by key
+      const fieldSchema = unwrapped.shape?.[name] as z.ZodTypeAny;
+      if (fieldSchema) {
+        // A field is required if it's not optional & not nullable
+        isRequired = !fieldSchema.isOptional() && !fieldSchema.isNullable();
+      }
+    }
   }
 
   return (
@@ -89,7 +103,10 @@ function FormField<
   );
 }
 
-// 4) Expose `isRequired` in useFormField (used by FormLabel, etc.)
+// ----------------------------------------------------------------------------
+// 4) `useFormField` to gather info for each field
+// ----------------------------------------------------------------------------
+
 function useFormField() {
   const fieldContext = React.useContext(FormFieldContext);
   const itemContext = React.useContext(FormItemContext);
@@ -109,11 +126,14 @@ function useFormField() {
     formItemId: `${id}-form-item`,
     formDescriptionId: `${id}-form-item-description`,
     formMessageId: `${id}-form-item-message`,
-    ...fieldState,
+    ...fieldState, // includes error, isDirty, etc.
   };
 }
 
-// 5) The rest is the standard "shadcn" structure
+// ----------------------------------------------------------------------------
+// 5) shadcn-style <FormItem>, <FormLabel>, etc.
+// ----------------------------------------------------------------------------
+
 type FormItemContextValue = {
   id: string;
 };
@@ -140,7 +160,6 @@ const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
 >(({ className, children, ...props }, ref) => {
-  // Grab `isRequired` from useFormField
   const { error, formItemId, isRequired } = useFormField();
 
   return (
@@ -221,14 +240,20 @@ const FormMessage = React.forwardRef<
 });
 FormMessage.displayName = "FormMessage";
 
+// ----------------------------------------------------------------------------
 // 6) Export everything
+// ----------------------------------------------------------------------------
+
 export {
-  Form, // Our new custom Form with schema support
+  // The main <Form> that includes the schema context
+  Form,
+  // The field that derives `isRequired` from the (possibly refined) Zod schema
   FormField,
+  // The rest are standard shadcn form components
+  useFormField,
   FormItem,
   FormLabel,
   FormControl,
   FormDescription,
   FormMessage,
-  useFormField, // optional if you need direct access
 };
